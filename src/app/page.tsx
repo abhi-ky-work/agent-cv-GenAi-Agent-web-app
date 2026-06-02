@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { Send, User, Loader2, Briefcase, FileText } from "lucide-react";
+import { Send, User, Loader2, Briefcase, FileText, Info } from "lucide-react";
 
 export default function Home() {
   const [messages, setMessages] = useState<{ role: "user" | "agent"; text: string }[]>([
@@ -10,6 +10,7 @@ export default function Home() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -30,7 +31,7 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const response = await fetch(`${backendUrl}/agent/invoke`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -62,6 +63,32 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col bg-[#0b0c10] text-gray-200 font-sans selection:bg-cyan-500/30">
+      
+      {/* Disclaimer Modal */}
+      {showDisclaimer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-gray-900 border border-gray-700 p-6 rounded-2xl max-w-md w-full shadow-2xl shadow-cyan-900/20 animate-in fade-in zoom-in duration-300">
+            <h2 className="text-lg font-bold text-gray-100 mb-3 flex items-center gap-2">
+              <Info className="w-5 h-5 text-cyan-400" />
+              Welcome to AgentCV
+            </h2>
+            <div className="text-sm text-gray-300 space-y-3 mb-6 leading-relaxed">
+              <p>
+                <strong>Heads up:</strong> The first response may take a moment due to server cold starts on my free hosting tier. Subsequent replies will be much faster.
+              </p>
+              <p>
+                <strong>Disclaimer:</strong> This is a Generative AI demonstrator trained on my work experience. The AI can occasionally make mistakes, so please don't rely solely on this information.
+              </p>
+            </div>
+            <button 
+              onClick={() => setShowDisclaimer(false)}
+              className="w-full py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-medium transition-colors"
+            >
+              I understand
+            </button>
+          </div>
+        </div>
+      )}
       {/* Premium Header */}
       <header className="flex items-center justify-between px-8 py-5 border-b border-gray-800 bg-[#0b0c10]/80 backdrop-blur-md sticky top-0 z-10 shadow-sm shadow-cyan-900/10">
         <div className="flex items-center gap-3">

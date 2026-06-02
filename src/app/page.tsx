@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { Send, User, Loader2, Briefcase, FileText, Info } from "lucide-react";
 
 export default function Home() {
+  console.log("Backend Url >>>>>>>>>>>>>", process.env.NEXT_PUBLIC_BACKEND_URL)
   const [messages, setMessages] = useState<{ role: "user" | "agent"; text: string }[]>([
     { role: "agent", text: "Hi! I am Abhishek's AI proxy. I'm equipped with his CV, project history, and career objectives. Ask me anything!" }
   ]);
@@ -63,7 +64,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col bg-[#0b0c10] text-gray-200 font-sans selection:bg-cyan-500/30">
-      
+
       {/* Disclaimer Modal */}
       {showDisclaimer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -80,7 +81,7 @@ export default function Home() {
                 <strong>Disclaimer:</strong> This is a Generative AI demonstrator trained on my work experience. The AI can occasionally make mistakes, so please don't rely solely on this information.
               </p>
             </div>
-            <button 
+            <button
               onClick={() => setShowDisclaimer(false)}
               className="w-full py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-medium transition-colors"
             >

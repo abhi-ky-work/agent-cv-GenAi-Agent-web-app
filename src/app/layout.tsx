@@ -22,6 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("Backend Url >>>>>>>>>>>>> in layout :", process.env.NEXT_PUBLIC_BACKEND_URL)
   return (
     <html
       lang="en"
